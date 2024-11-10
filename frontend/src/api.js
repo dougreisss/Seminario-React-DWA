@@ -1,8 +1,8 @@
-const urlApi = 'http://localhost:5000/api/book'
+const urlApi = 'http://localhost:5000/api'
 
-export const fetchMessage = async () => {
+export const getBooks = async () => {
     try {
-        const response = await fetch(urlApi);
+        const response = await fetch(`${urlApi}/book/`);
         const data = await response.json();
         return data;
     } catch (error) {
