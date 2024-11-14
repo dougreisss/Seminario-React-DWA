@@ -16,6 +16,10 @@ app.use(cors({
   
 app.use(express.json());
 
+app.get('/', (req, res) => {
+    res.send('Esta é a rota padrão. <br> Para executar a rota de livro, coloque a seguinte url "/api/book" ');
+});
+
 app.use('/api/book', bookRoutes);
 
 app.listen(PORT, () => {
