@@ -1,6 +1,12 @@
 const express = require('express');
 const cors = require('cors'); 
 
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
