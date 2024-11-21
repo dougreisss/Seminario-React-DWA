@@ -28,6 +28,35 @@
   color: #61dafb;
 }
 
+/* Garantir que o overlay ocupe toda a tela */
+.ReactModal__Overlay {
+    background-color: rgba(0, 0, 0, 0.5); /* Cor de fundo semitransparente */
+    display: flex;
+    justify-content: center; /* Alinha o modal horizontalmente */
+    align-items: center; /* Alinha o modal verticalmente */
+    position: fixed; /* Garante que o modal fique fixo na tela */
+    top: 0; /* Posiciona no topo da tela */
+    left: 0; /* Posiciona à esquerda da tela */
+    width: 100vw; /* Largura total da tela */
+    height: 100vh; /* Altura total da tela */
+    z-index: 1000; /* Garante que o modal fique acima de outros elementos */
+}
+
+/* Estilos para o conteúdo do modal */
+.ReactModal__Content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 100%; /* Garante que o modal se ajuste a diferentes larguras */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column; /* Organiza os elementos dentro do modal de forma vertical */
+    align-items: center; /* Centraliza o conteúdo dentro do modal */
+}
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
