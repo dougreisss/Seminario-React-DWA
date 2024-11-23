@@ -2,6 +2,7 @@ import '../../App.css';
 import React, { useState, useEffect } from 'react';
 import { getBooks, deleteBook } from '../../Services/apiBook';
 import CreateBookForm from './CreateBookForm';
+import UpdateBookForm from './UpdateBookForm';
 import Modal from 'react-modal';
 
 Modal.setAppElement('#root');  // Importante para acessibilidade
@@ -12,6 +13,7 @@ function BookList() {
     const [showForm, setShowForm] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false); // Controla a abertura do modal
     const [bookToDelete, setBookToDelete] = useState(null); // Armazena o livro a ser deletado
+    const [bookToUpdate, setBookToUpdate] = useState(null); // Livro que será atualizado
 
     // Carregar os livros quando o componente é montado
     useEffect(() => {
@@ -40,7 +42,7 @@ function BookList() {
 
         try {
             await deleteBook(bookToDelete.book_id); // Deleta o livro
-            setBooks((prevBooks) => prevBooks.filter((book) => book.book_id !== bookToDelete.book_id)); // Remove o livro da lista local
+            fetchBooks(); // Chama novamente a api para recarregar a lista de livros
             setIsModalOpen(false); // Fecha o modal após a exclusão
             setBookToDelete(null); // Limpa a referência ao livro deletado
         } catch (error) {
@@ -48,6 +50,11 @@ function BookList() {
         }
     };
 
+    const handleUpdateComplete = async () => {
+        await fetchBooks();
+        setBookToUpdate(null);
+    };
+    
     // Função para abrir o modal de confirmação
     const openModal = (book) => {
         setBookToDelete(book); // Define o livro a ser deletado
@@ -64,7 +71,10 @@ function BookList() {
         <div className="max-w-3xl mx-auto p-4">
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Lista de Livros</h2>
 
-            {showForm ? (
+            {
+                bookToUpdate?(
+                <UpdateBookForm book = { bookToUpdate } onUpdateComplete = { handleUpdateComplete } />
+            ) : showForm ? (
                 <div>
                     <button
                         className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition mb-4"
@@ -91,6 +101,12 @@ function BookList() {
                                 <h3 className="text-2xl font-semibold text-gray-900">{book.title}</h3>
                                 <p className="text-gray-700 mb-4">{book.synopsis}</p>
                                 <div className="flex space-x-4">
+                                    <button
+                                        className="text-blue-500 hover:text-blue-700"
+                                        onClick={() => setBookToUpdate(book)}
+                                    >
+                                        Atualizar
+                                    </button>
                                     <button
                                         className="text-red-500 hover:text-red-700"
                                         onClick={() => openModal(book)}  // Abre o modal passando o livro

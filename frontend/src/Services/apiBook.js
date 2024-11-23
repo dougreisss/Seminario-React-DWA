@@ -43,6 +43,17 @@ export const createBook = async (bookData) => {
 
 export const updateBook = async (bookData) => {
 
+    const formatDateForSQL = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); 
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`; 
+    };
+
+    bookData.publication_date = formatDateForSQL(bookData.publication_date);
+    bookData.created_at = formatDateForSQL(bookData.created_at);
+
     const response = await fetch(`${config.API_URL}/book/id/${bookData.book_id}`, {
         method: 'PUT',
         headers: {

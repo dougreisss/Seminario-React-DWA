@@ -1,51 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { createBook } from '../../Services/apiBook';
+import { updateBook } from '../../Services/apiBook';
 import { getAuthors } from '../../Services/apiAuthor';
 
-function CreateBookForm({ onBookCreated }) {
-    
-    const [newBook, setNewBook] = useState({
-        title: '',
-        synopsis: '',
-        author_id: null,
-        publication_date: '',
-    });
+function UpdateBookForm( {book, onUpdateComplete }) {
 
+    const [updatedBook, setUpdatedBook] = useState( {...book });
     const [authors, setAuthors] = useState([]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setNewBook((prevBook) => ({
+        setUpdatedBook( (prevBook) => ({
             ...prevBook,
-            [name]: value,
+            [name]: value
         }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            const createdBook = await createBook(newBook);
-            onBookCreated(createdBook); // Chama a função passada para atualizar a lista
-            setNewBook({
-                title: '',
-                synopsis: '',
-                author_id: null,
-                publication_date: '',
-            });
+            await updateBook(updatedBook);
+            onUpdateComplete();
         } catch (error) {
-            console.error('Erro ao criar livro:', error.message);
+            console.error('Erro ao atualizar livro: ', error.message);
         }
     };
 
     const handleChangeAuthor = (e) => {
         const authorId = e.target.value;
-        setNewBook((prevBook) => ({
+        setUpdatedBook((prevBook) => ({
             ...prevBook,
             author_id: authorId,
         }));
     };
 
-    useEffect( () => {
+    useEffect(() => {
 
         const fetchAuthor = async () => {
             const data = await getAuthors();
@@ -56,6 +45,15 @@ function CreateBookForm({ onBookCreated }) {
 
     }, []);
 
+    const formatDateForInput = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda
+        const day = String(date.getDate()).padStart(2, '0'); // Adiciona zero à esquerda
+        return `${year}-${month}-${day}`;
+    };
+
+
     return (
         <form onSubmit={handleSubmit} className="mb-8">
             <div className="mb-4">
@@ -63,7 +61,7 @@ function CreateBookForm({ onBookCreated }) {
                 <input
                     type="text"
                     name="title"
-                    value={newBook.title}
+                    value={updatedBook.title}
                     onChange={handleInputChange}
                     className="w-full border border-gray-300 p-2 rounded"
                     required
@@ -73,7 +71,7 @@ function CreateBookForm({ onBookCreated }) {
                 <label className="block text-gray-700">Sinopse:</label>
                 <textarea
                     name="synopsis"
-                    value={newBook.synopsis}
+                    value={updatedBook.synopsis}
                     onChange={handleInputChange}
                     className="w-full border border-gray-300 p-2 rounded"
                     required
@@ -81,13 +79,14 @@ function CreateBookForm({ onBookCreated }) {
             </div>
             <div className="mb-4">
                 <label className="block text-gray-700">Autor:</label>
-                <select 
-                    name="author_id"  
-                    value={newBook.author_id || ""}
-                    onChange={handleChangeAuthor} 
-                    className="w-full border border-gray-300 p-2 rounded">
+                <select
+                    name="author_id"
+                    value={updatedBook.author_id || ""}
+                    onChange={handleChangeAuthor}
+                    className="w-full border border-gray-300 p-2 rounded"
+                >
                     <option value="" disabled>
-                        --- Selecione um autor --
+                        --- Selecione um autor ---
                     </option>
                     {authors.map((author) => (
                         <option key={author.author_id} value={author.author_id}>
@@ -101,7 +100,7 @@ function CreateBookForm({ onBookCreated }) {
                 <input
                     type="date"
                     name="publication_date"
-                    value={newBook.publication_date}
+                    value={formatDateForInput(updatedBook.publication_date)}
                     onChange={handleInputChange}
                     className="w-full border border-gray-300 p-2 rounded"
                 />
@@ -110,10 +109,10 @@ function CreateBookForm({ onBookCreated }) {
                 type="submit"
                 className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
             >
-                Criar Livro
+                Atualizar Livro
             </button>
-        </form>
+        </form>  
     );
 }
 
-export default CreateBookForm;
+export default UpdateBookForm;
