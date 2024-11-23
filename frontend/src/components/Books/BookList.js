@@ -1,6 +1,6 @@
 import '../../App.css';
 import React, { useState, useEffect } from 'react';
-import { getBooks, deleteBook } from '../../Services/api';
+import { getBooks, deleteBook } from '../../Services/apiBook';
 import CreateBookForm from './CreateBookForm';
 import Modal from 'react-modal';
 

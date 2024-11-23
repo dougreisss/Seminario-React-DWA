@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { createBook, getAuthors } from '../../Services/api';
+import { createBook } from '../../Services/apiBook';
+import { getAuthors } from '../../Services/apiAuthor';
+
 
 function CreateBookForm({ onBookCreated }) {
     
