@@ -42,8 +42,10 @@ exports.createBook = (req, res) => {
 };
 
 exports.updateBook = (req, res) => {
+
     const bookId = req.params.id;
     const updatedBook = req.body;
+    
     Book.update(bookId, updatedBook, (err) => {
         if (err) {
             return res.status(500).json({ error: err.message });
