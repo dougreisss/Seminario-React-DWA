@@ -45,15 +45,6 @@ function UpdateBookForm( {book, onUpdateComplete }) {
 
     }, []);
 
-    const formatDateForInput = (dateString) => {
-        const date = new Date(dateString);
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda
-        const day = String(date.getDate()).padStart(2, '0'); // Adiciona zero à esquerda
-        return `${year}-${month}-${day}`;
-    };
-
-
     return (
         <form onSubmit={handleSubmit} className="mb-8">
             <div className="mb-4">
@@ -100,7 +91,7 @@ function UpdateBookForm( {book, onUpdateComplete }) {
                 <input
                     type="date"
                     name="publication_date"
-                    value={formatDateForInput(updatedBook.publication_date)}
+                    value={updatedBook.publication_date}
                     onChange={handleInputChange}
                     className="w-full border border-gray-300 p-2 rounded"
                 />

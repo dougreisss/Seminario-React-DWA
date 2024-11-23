@@ -2,12 +2,12 @@ const db = require('../config/db');
 
 const Book = {
     getAll: (callback) => {
-        const query = 'SELECT * FROM books';
+        const query = 'SELECT book_id, title, author_id, synopsis, date_format(publication_date, "%Y-%m-%d") as publication_date, cover_image, average_rating, date_format(created_at, "%Y-%m-%d") as created_at FROM books;';
         db.query(query, callback);
     },
 
     getById: (id, callback) => {
-        const query = 'SELECT * FROM books WHERE book_id = ?';
+        const query = 'SELECT book_id, title, author_id, synopsis, date_format(publication_date, "%Y-%m-%d") as publication_date, cover_image, average_rating, date_format(created_at, "%Y-%m-%d") as created_at FROM books WHERE book_id = ?';
         db.query(query, [id], callback);
     },
 
