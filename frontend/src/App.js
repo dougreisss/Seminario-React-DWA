@@ -1,33 +1,23 @@
-import logo from './logo.svg';
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import BookList from './components/Books/BookList';
+import UpdateBookForm from './components/Books/UpdateBookForm'; 
+import CreateBookForm from './components/Books/CreateBookForm'; 
 
 function App() {
 
-  // const [message, setMessage] = useState([]);
+  return (
+    <Router>
+      <Routes>
+          <Route path="/" element={<Navigate to="/books" replace />} />
+          <Route path="/books/" element={<BookList />} />
+          <Route path="/books/update/:id" element={<UpdateBookForm />} />
+          <Route path="/books/create/" element={<CreateBookForm />} />
+      </Routes>
+    </Router>
+  );
 
-  // useEffect(() => {
-  //   const getMessage = async () => {
-  //     const msg = await fetchMessage();
-  //     setMessage(msg);
-  //   };
-
-  //   getMessage();
-  // }, []);
-
-  // return (
-  //   <div className='App'>
-  //     <h1>Lista de Livros</h1>
-  //     <ul>
-  //       {message.map(book => (
-  //         <li key={book.book_id}>
-  //           <h2>{book.title}</h2>
-  //           <p>Autor: {book.author}</p>
-  //         </li>
-  //       ))}
-  //     </ul>
-  //   </div>
-  // );
 }
 
 export default App;

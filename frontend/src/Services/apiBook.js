@@ -41,8 +41,6 @@ export const createBook = async (bookData) => {
     return response.json();
 };
 
-
-
 export const updateBook = async (bookData) => {
 
     const response = await fetch(`${config.API_URL}/book/id/${bookData.book_id}`, {
