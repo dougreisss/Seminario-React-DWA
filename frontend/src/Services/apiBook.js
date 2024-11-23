@@ -25,6 +25,21 @@ export const getBookById = async (bookId) => {
     }   
 };
 
+export const getBookWithDetails = async () => {
+    try {
+        const response = await fetch(`${config.API_URL}/book/details`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erro ao recuperar os livros: ', error)
+    }
+};
+
 export const createBook = async (bookData) => {
     const response = await fetch(`${config.API_URL}/book`, {
         method: 'POST',

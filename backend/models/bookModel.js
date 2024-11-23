@@ -22,7 +22,7 @@ const Book = {
                         a.author_id,
                         a.name,
                         a.bio,
-                        GROUP_CONCAT(g.name) as book_genres,
+                        GROUP_CONCAT(g.name SEPARATOR ', ') as book_genres,
                         COUNT(r.rating) as rating,
                         AVG(r.rating) as rating_media,
                         rv.review_id,
