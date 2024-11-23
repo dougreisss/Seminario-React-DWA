@@ -71,8 +71,8 @@ function BookList() {
                             >
                                 <h3 className="text-2xl font-semibold text-gray-900">{book.title}</h3>
                                 <p className="text-gray-700 mb-4">{book.synopsis}</p>
-                                <p className="text-gray-700 mb-4">{book.book_genres}</p>
-                                <p className="text-gray-700 mb-4">{book.name}</p>
+                                <p className="text-gray-700 mb-4">Gêneros: {book.book_genres}</p>
+                                <p className="text-gray-700 mb-4">Autor: {book.name}</p>
                                 <div className="flex space-x-4">
                                     <button
                                         className="text-blue-500 hover:text-blue-700"
@@ -93,7 +93,6 @@ function BookList() {
                 )}
             </div>
 
-            
             <Modal
                 isOpen={isModalOpen} // Controla se o modal está aberto
                 onRequestClose={closeModal} // Função para fechar o modal

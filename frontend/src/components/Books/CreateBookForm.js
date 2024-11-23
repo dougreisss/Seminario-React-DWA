@@ -39,7 +39,7 @@ function CreateBookForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const createdBook = await createBook(newBook);
+            await createBook(newBook);
             handleBackToBooks();
             setNewBook({
                 title: '',

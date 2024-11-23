@@ -52,6 +52,7 @@ function App() {
             {/* Rota para criação de livros */}
             <Route path="/books/create/" element={<CreateBookForm />} />
 
+            {/* Rota para página sobre (desenvolvido por) */}
             <Route path="/about" element={<About />}></Route>
           </Routes>
         </main>
@@ -59,7 +60,7 @@ function App() {
         {/* Rodapé */}
         <footer className="bg-gray-800 text-gray-300 p-4">
           <div className="container mx-auto text-center">
-            <p>&copy; {new Date().getFullYear()} BookManager - Gerencie seus livros e avaliações com facilidade.</p>
+            <p>&copy; {new Date().getFullYear()} Book Manager - Gerencie seus livros e avaliações com facilidade.</p>
           </div>
         </footer>
       </div>

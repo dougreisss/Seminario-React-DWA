@@ -6,6 +6,7 @@ const PORT = process.env.PORT || 5000;
 
 const bookRoutes = require('./routes/bookRoutes');
 const authorRoutes = require('./routes/authorRoutes');
+const genresRoutes = require('./routes/genresRoutes');
 
 app.use(cors());
 
@@ -15,11 +16,11 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
-
 app.use(express.json());
 
 app.use('/api/book', bookRoutes);
 app.use('/api/author', authorRoutes);
+app.use('/api/genres', genresRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
