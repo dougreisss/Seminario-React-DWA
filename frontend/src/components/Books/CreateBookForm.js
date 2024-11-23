@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { createBook } from '../../Services/api';
+import React, { useEffect, useState } from 'react';
+import { createBook, getAuthors } from '../../Services/api';
 
 function CreateBookForm({ onBookCreated }) {
     
@@ -9,6 +9,8 @@ function CreateBookForm({ onBookCreated }) {
         author_id: null,
         publication_date: '',
     });
+
+    const [authors, setAuthors] = useState([]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -34,6 +36,25 @@ function CreateBookForm({ onBookCreated }) {
         }
     };
 
+    const handleChangeAuthor = (e) => {
+        const authorId = e.target.value;
+        setNewBook((prevBook) => ({
+            ...prevBook,
+            author_id: authorId,
+        }));
+    };
+
+    useEffect( () => {
+
+        const fetchAuthor = async () => {
+            const data = await getAuthors();
+            setAuthors(data);
+        };
+
+        fetchAuthor();
+
+    }, []);
+
     return (
         <form onSubmit={handleSubmit} className="mb-8">
             <div className="mb-4">
@@ -58,14 +79,21 @@ function CreateBookForm({ onBookCreated }) {
                 ></textarea>
             </div>
             <div className="mb-4">
-                <label className="block text-gray-700">Autor ID:</label>
-                <input
-                    type="number"
-                    name="author_id"
-                    value={newBook.author_id || ''}
-                    onChange={handleInputChange}
-                    className="w-full border border-gray-300 p-2 rounded"
-                />
+                <label className="block text-gray-700">Autor:</label>
+                <select 
+                    name="author_id"  
+                    value={newBook.author_id || ""}
+                    onChange={handleChangeAuthor} 
+                    className="w-full border border-gray-300 p-2 rounded">
+                    <option value="" disabled>
+                        --- Selecione um autor --
+                    </option>
+                    {authors.map((author) => (
+                        <option key={author.author_id} value={author.author_id}>
+                            {author.name}
+                        </option>
+                    ))}
+                </select>
             </div>
             <div className="mb-4">
                 <label className="block text-gray-700">Data de Publicação:</label>

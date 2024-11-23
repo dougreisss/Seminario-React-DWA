@@ -18,7 +18,6 @@ export const createBook = async (bookData) => {
         },
         body: JSON.stringify(bookData),
     });
-    console.log(response.ok);
     if (!response.ok) {
         throw new Error('Erro ao criar o livro');
     }
@@ -42,6 +41,18 @@ export const deleteBook = async (bookId) => {
         return await response.json();
 
     } catch (error) {
-        console.error('Erro na requisição DELETE.')
+        console.error('Erro na requisição DELETE.', error);
     }
+};
+
+export const getAuthors = async () => {
+
+    try {
+        const response = await fetch(`${urlApi}/author/`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Erro na requisição getAuthors.', error)
+    }
+
 };
