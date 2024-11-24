@@ -31,26 +31,6 @@ export const getGenreById = async (genreId) => {
 
 };
 
-export const getGenreByBookId = async (bookId) => {
-
-    try {
-
-        const response = await fetch(`${config.API_URL}/genres/bookGenre/id/${bookId}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const data = await response.json();
-        return data;
-    } catch (error)
-    {
-        console.error('Erro na requisição getAuthorById: ', error);
-    }
-
-};
-
 export const createGenre = async (genre) => {
 
     try {
@@ -71,30 +51,6 @@ export const createGenre = async (genre) => {
 
     } catch (error) {
         console.error('Erro na requisição createGenre: ', error);
-    }
-
-};
-
-export const createBookGenre = async (genreBook) => {
-
-    try {
-        
-        const response = await fetch(`${config.API_URL}/genres/bookGenre`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(genreBook)
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro ao criar o genero do livro');
-        }
-
-        return response.json();
-
-    } catch (error) {
-        console.error('Erro na requisição createBookGenre: ', error);
     }
 
 };
@@ -131,32 +87,6 @@ export const deleteGenre = async (genreId) => {
             headers: {
                 'Content-Type': 'application/json'
             }
-        });
-
-        if (!response.ok) {
-            throw new Error('Erro ao deletar o autor');
-        }
-
-        return response.json();
-
-    } catch (error) {
-        console.error('Erro na requisição deleteGenre: ', error);
-    }
-
-};
-
-// TODO REFATORAR 
-
-export const deleteBookGenre = async (genreBook) => {
-
-    try {
-
-        const response = await fetch(`${config.API_URL}/genres/bookGenreDelete/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(genreBook)
         });
 
         if (!response.ok) {

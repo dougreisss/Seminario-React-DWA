@@ -26,22 +26,6 @@ exports.getByIdGenres = (req, res) => {
 
 };
 
-exports.getGenreByBookId = (req, res) => {
-
-    const bookId = req.params.id;
-
-    Genres.getGenreByBookId(bookId, (err, results) => {
-
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-
-        res.json(results);
-
-    });
-
-};
-
 exports.createGenres = (req, res) => {
 
     const genres = req.body;
@@ -53,22 +37,6 @@ exports.createGenres = (req, res) => {
         }
 
         res.status(201).json({ message: 'Genero criado com sucesso', genresId: results.insertId });
-
-    });
-
-};
-
-exports.createBookGenres = (req, res) => {
-
-    const genresBook = req.body;
-
-    Genres.createBookGenres(genresBook, (err, results) => {
-
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-
-        res.status(201).json({ message: 'Genero do livro criado com sucesso', genresId: results.insertId });
 
     });
 
@@ -107,18 +75,3 @@ exports.deleteGenres = (req, res) => {
 
 };
 
-exports.deleteBookGenre = (req, res) => {
-
-    const genresBook = req.body;
-
-    Genres.deleteBookGenre(genresBook, (err, result) => {
-
-        if (err) {
-            return res.status(500).json({ error: err.message });
-        }
-
-        res.json({ message: 'Genero do livro excluído com sucesso' });
-
-    });
-
-};

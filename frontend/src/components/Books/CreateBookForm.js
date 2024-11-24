@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 
 import { createBook } from '../../Services/apiBook';
 import { getAuthors } from '../../Services/apiAuthor';
-import { getGenres, createBookGenre } from '../../Services/apiGenre'; 
+import { getGenres } from '../../Services/apiGenre'; 
+import { createBookGenre } from '../../Services/apiGenreBook';
 
 function CreateBookForm() {
 
