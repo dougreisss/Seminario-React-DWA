@@ -16,6 +16,11 @@ const Genres = {
         db.query(query, [genres], callback);
     },
 
+    createBookGenres: (genresBook, callback) => {
+        const query = "INERT INTO book_genres SET ?";
+        db.query(query, [genresBook], callback);
+    },
+
     update: (id, genres, callback) => {
         const query = "UPDATE genres SET ? WHERE genre_id = ?";
         db.query(query, [genres, id], callback);

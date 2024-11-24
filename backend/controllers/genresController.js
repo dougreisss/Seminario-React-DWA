@@ -42,6 +42,22 @@ exports.createGenres = (req, res) => {
 
 };
 
+exports.createBookGenres = (req, res) => {
+
+    const genresBook = req.body;
+
+    Genres.createBookGenres(genresBook, (err, results) => {
+
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        res.status(201).json({ message: 'Genero do livro criado com sucesso', genresId: results.insertId });
+
+    });
+
+};
+
 exports.updateGenres = (req, res) => {
 
     const genresId = req.params.id;
