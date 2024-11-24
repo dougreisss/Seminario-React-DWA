@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { getBookById, updateBook } from '../../Services/apiBook';
 import { getAuthors } from '../../Services/apiAuthor';
+import { getGenres, getGenreByBookId } from '../../Services/apiGenre';
 
 function UpdateBookForm() {
 

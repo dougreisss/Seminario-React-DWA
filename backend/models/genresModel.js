@@ -11,6 +11,11 @@ const Genres = {
         db.query(query, [id], callback);
     },
 
+    getGenreByBookId: (bookId, callback) => {
+        const query = "SELECT * FROM book_genres where book_id = ?";
+        db.query(query, [bookId], callback);
+    },
+
     create: (genres, callback) => {
         const query = "INSERT INTO genres SET ?";
         db.query(query, [genres], callback);

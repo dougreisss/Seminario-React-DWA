@@ -31,6 +31,26 @@ export const getGenreById = async (genreId) => {
 
 };
 
+export const getGenreByBookId = async (bookId) => {
+
+    try {
+
+        const response = await fetch(`${config.API_URL}/genres/bookGenre/id/${bookId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error)
+    {
+        console.error('Erro na requisição getAuthorById: ', error);
+    }
+
+};
+
 export const createGenre = async (genre) => {
 
     try {

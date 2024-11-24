@@ -26,6 +26,22 @@ exports.getByIdGenres = (req, res) => {
 
 };
 
+exports.getGenreByBookId = (req, res) => {
+
+    const bookId = req.params.id;
+
+    Genres.getGenreByBookId(bookId, (err, results) => {
+
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        res.json(results);
+
+    });
+
+};
+
 exports.createGenres = (req, res) => {
 
     const genres = req.body;
