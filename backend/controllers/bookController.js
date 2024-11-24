@@ -37,7 +37,7 @@ exports.createBook = (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.status(201).json({ message: 'Livro criado com sucesso', bookId: results.insertId });
+        res.status(201).json({ message: 'Livro criado com sucesso', book_id: results.insertId });
     });
 };
 

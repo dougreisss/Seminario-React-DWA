@@ -1,6 +1,6 @@
 import config from './apiConfig';
 
-export const getAllGenre = async () => {
+export const getGenres = async () => {
 
     try {
         const response = await fetch(`${config.API_URL}/genres/`);
@@ -59,7 +59,7 @@ export const createBookGenre = async (genreBook) => {
 
     try {
         
-        const response = await fetch(`${config.API_URL}/bookGenre`, {
+        const response = await fetch(`${config.API_URL}/genres/bookGenre`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -106,7 +106,7 @@ export const deleteGenre = async (genreId) => {
 
     try {
 
-        const response = await fetch(`${config.API_URL}/Genre/id/${genreId}`, {
+        const response = await fetch(`${config.API_URL}/genre/id/${genreId}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

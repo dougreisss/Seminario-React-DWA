@@ -3,10 +3,15 @@ import { useNavigate } from 'react-router-dom';
 
 import { createBook } from '../../Services/apiBook';
 import { getAuthors } from '../../Services/apiAuthor';
+import { getGenres, createBookGenre } from '../../Services/apiGenre'; 
 
 function CreateBookForm() {
 
     const navigate = useNavigate();
+
+    const handleBackToBooks = () => {
+        navigate('/books');
+    }
 
     const [newBook, setNewBook] = useState({
         title: '',
@@ -17,15 +22,22 @@ function CreateBookForm() {
 
     const [authors, setAuthors] = useState([]);
 
+    const [genres, setGenres] = useState([]);
+    const [selectedGenres, setSelectedGenres] = useState([]); 
+
+    const fetchAuthor = async () => {
+        const data = await getAuthors();
+        setAuthors(data);
+    };
+
+    const fetchGenres = async () => {
+        const data = await getGenres();
+        setGenres(data);
+    };
+
     useEffect(() => {
-
-        const fetchAuthor = async () => {
-            const data = await getAuthors();
-            setAuthors(data);
-        };
-
         fetchAuthor();
-
+        fetchGenres();
     }, []);
 
     const handleInputChange = (e) => {
@@ -39,7 +51,19 @@ function CreateBookForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await createBook(newBook);
+            
+            const createdBook = await createBook(newBook);
+
+            if (createdBook && createdBook.book_id) {
+
+                const promises = selectedGenres.map((genreId) =>
+                    createBookGenre({ book_id: createdBook.book_id, genre_id: genreId })
+                );
+
+                await Promise.all(promises);
+
+            }
+
             handleBackToBooks();
             setNewBook({
                 title: '',
@@ -60,10 +84,18 @@ function CreateBookForm() {
         }));
     };
 
-    const handleBackToBooks = () => {
-        navigate('/books');
-    }
-   
+    const handleGenreChange = (e) => {
+
+        const genreId = parseInt(e.target.value); 
+
+        setSelectedGenres((prevSelected) =>
+            prevSelected.includes(genreId)
+                ? prevSelected.filter((id) => id !== genreId) 
+                : [...prevSelected, genreId] 
+        );
+
+    };
+
     return (
         <div className="max-w-3xl mx-auto p-4">
 
@@ -114,6 +146,23 @@ function CreateBookForm() {
                             </option>
                         ))}
                     </select>
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700">Gêneros:</label>
+                    <div className="grid grid-cols-2 gap-2">
+                        {genres.map((genre) => (
+                            <label key={genre.genre_id} className="flex items-center space-x-2">
+                                <input
+                                    type="checkbox"
+                                    value={genre.genre_id}
+                                    checked={selectedGenres.includes(genre.genre_id)}
+                                    onChange={handleGenreChange}
+                                    className="form-checkbox"
+                                />
+                                <span>{genre.name}</span>
+                            </label>
+                        ))}
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700">Data de Publicação:</label>
