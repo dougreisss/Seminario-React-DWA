@@ -3,31 +3,39 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 import { getBookById, updateBook } from '../../Services/apiBook';
 import { getAuthors } from '../../Services/apiAuthor';
-import { getGenres, getGenreByBookId } from '../../Services/apiGenre';
+import { getGenreByBookId, getGenres, createBookGenre, deleteBookGenre } from '../../Services/apiGenre';
 
 function UpdateBookForm() {
-
-    const { id } = useParams(); // Obtém o ID da URL
+    const { id } = useParams();
     const navigate = useNavigate();
     const [book, setBook] = useState(null);
     const [authors, setAuthors] = useState([]);
+    const [allGenres, setAllGenres] = useState([]);
+    const [selectedGenres, setSelectedGenres] = useState([]); // Gêneros selecionados no formulário
+    const [initialGenres, setInitialGenres] = useState([]);  // Gêneros originalmente associados ao livro
 
     useEffect(() => {
-
-        const fetchBookAndAuthors = async () => {
+        const fetchBookDetails = async () => {
             try {
                 const bookData = await getBookById(id);
                 setBook(bookData);
 
                 const authorsData = await getAuthors();
                 setAuthors(authorsData);
+
+                const allGenresData = await getGenres();
+                setAllGenres(allGenresData);
+
+                const genresByBook = await getGenreByBookId(id);
+
+                setInitialGenres(genresByBook.map((genre) => genre.genre_id));
+                setSelectedGenres(genresByBook.map((genre) => genre.genre_id));
             } catch (error) {
-                console.error('Erro ao buscar livro e autores:', error.message);
+                console.error('Erro ao buscar dados:', error.message);
             }
         };
 
-        fetchBookAndAuthors();
-
+        fetchBookDetails();
     }, [id]);
 
     const handleInputChange = (e) => {
@@ -38,27 +46,54 @@ function UpdateBookForm() {
         }));
     };
 
+    const handleGenreChange = (e) => {
+        const genreId = parseInt(e.target.value);
+        setSelectedGenres((prevSelected) =>
+            prevSelected.includes(genreId)
+                ? prevSelected.filter((id) => id !== genreId) // Remove o gênero se já estiver selecionado
+                : [...prevSelected, genreId] // Adiciona o gênero
+        );
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // Atualiza o livro
             await updateBook(book);
+
+            // Identifica gêneros a adicionar e a remover
+            const genresToAdd = selectedGenres.filter((id) => !initialGenres.includes(id));
+            const genresToRemove = initialGenres.filter((id) => !selectedGenres.includes(id));
+
+            // Atualiza gêneros no backend
+            if (genresToAdd.length > 0) {
+
+                const promises = genresToAdd.map((genreId) =>
+                    createBookGenre({ book_id: book.book_id, genre_id: genreId })
+                );
+
+                await Promise.all(promises);
+
+            }
+            if (genresToRemove.length > 0) {
+
+                const promises = genresToRemove.map((genreId) =>
+                    deleteBookGenre({ book_id: book.book_id, genre_id: genreId })
+                );
+
+                await Promise.all(promises);
+
+            }
+
             handleBackToBooks(); // Redireciona para a lista de livros após a atualização
         } catch (error) {
             console.error('Erro ao atualizar livro:', error.message);
         }
     };
 
-    const handleChangeAuthor = (e) => {
-        const authorId = e.target.value;
-        setBook((prevBook) => ({
-            ...prevBook,
-            author_id: authorId,
-        }));
-    };
-
     const handleBackToBooks = () => {
         navigate('/books');
-    }
+    };
 
     if (!book) {
         return <p className="text-center text-gray-600">Carregando livro...</p>;
@@ -117,7 +152,12 @@ function UpdateBookForm() {
                     <select
                         name="author_id"
                         value={book.author_id || ""}
-                        onChange={handleChangeAuthor}
+                        onChange={(e) =>
+                            setBook((prevBook) => ({
+                                ...prevBook,
+                                author_id: e.target.value,
+                            }))
+                        }
                         className="w-full border border-gray-300 p-2 rounded"
                     >
                         <option value="" disabled>
@@ -129,6 +169,23 @@ function UpdateBookForm() {
                             </option>
                         ))}
                     </select>
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700">Gêneros:</label>
+                    <div className="grid grid-cols-2 gap-2">
+                        {allGenres.map((genre) => (
+                            <label key={genre.genre_id} className="flex items-center space-x-2">
+                                <input
+                                    type="checkbox"
+                                    value={genre.genre_id}
+                                    checked={selectedGenres.includes(genre.genre_id)}
+                                    onChange={handleGenreChange}
+                                    className="form-checkbox"
+                                />
+                                <span>{genre.name}</span>
+                            </label>
+                        ))}
+                    </div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700">Data de Publicação:</label>
@@ -148,7 +205,6 @@ function UpdateBookForm() {
                 </button>
             </form>
         </div>
-        
     );
 }
 

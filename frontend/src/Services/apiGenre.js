@@ -144,3 +144,29 @@ export const deleteGenre = async (genreId) => {
     }
 
 };
+
+// TODO REFATORAR 
+
+export const deleteBookGenre = async (genreBook) => {
+
+    try {
+
+        const response = await fetch(`${config.API_URL}/genres/bookGenreDelete/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(genreBook)
+        });
+
+        if (!response.ok) {
+            throw new Error('Erro ao deletar o autor');
+        }
+
+        return response.json();
+
+    } catch (error) {
+        console.error('Erro na requisição deleteGenre: ', error);
+    }
+
+};

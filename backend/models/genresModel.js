@@ -34,6 +34,11 @@ const Genres = {
     delete: (id, callback) => {
         const query = "DELETE FROM genres WHERE genre_id = ?";
         db.query(query, [id], callback);
+    },
+
+    deleteBookGenre: (bookGenre, callback) => {
+        const query = "DELETE FROM book_genres WHERE book_id = ? and genre_id = ? ";
+        db.query(query, [bookGenre.book_id, bookGenre.genre_id], callback);
     }
 };
 

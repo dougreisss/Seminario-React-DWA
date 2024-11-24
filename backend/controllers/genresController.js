@@ -106,3 +106,19 @@ exports.deleteGenres = (req, res) => {
     });
 
 };
+
+exports.deleteBookGenre = (req, res) => {
+
+    const genresBook = req.body;
+
+    Genres.deleteBookGenre(genresBook, (err, result) => {
+
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+
+        res.json({ message: 'Genero do livro excluído com sucesso' });
+
+    });
+
+};

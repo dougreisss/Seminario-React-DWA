@@ -9,5 +9,6 @@ router.post('/', genresController.createGenres);
 router.post('/bookGenre', genresController.createBookGenres);
 router.put('/id/:id', genresController.updateGenres);
 router.delete('/id/:id', genresController.deleteGenres);
+router.post('/bookGenreDelete/', genresController.deleteBookGenre);
 
 module.exports = router;
