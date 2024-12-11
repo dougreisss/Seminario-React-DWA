@@ -24,7 +24,11 @@ exports.getByIdReview = (req, res) => {
             return res.status(500).json({ error: err.message });
         }
 
-        res.json(results);
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Review nao encontrado' });
+        }
+
+        res.json(results[0]);
     });
 
 };

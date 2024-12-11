@@ -8,7 +8,7 @@ const Review = {
     },
 
     getById: (id, callback) => {
-        const query = "SELECT * FROM reviews where genre_id = ?";
+        const query = `SELECT review_id, book_id, user_id, review_text, date_format(created_at, "%Y-%m-%d") as created_at  FROM reviews where review_id = ?`;
         db.query(query, [id], callback);
     },
 

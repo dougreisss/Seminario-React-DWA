@@ -1,10 +1,13 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
-import BookList from './components/Books/BookList';
-import UpdateBookForm from './components/Books/UpdateBookForm'; 
-import CreateBookForm from './components/Books/CreateBookForm'; 
-import About from './components/About/About';
+import BookList from './Components/Books/BookList';
+import UpdateBookForm from './Components/Books/UpdateBookForm'; 
+import CreateBookForm from './Components/Books/CreateBookForm'; 
+import About from './Components/About/About';
+import ReviewList from './Components/Review/ReviewList';
+import CreateReviewForm from './Components/Review/CreateReviewForm';
+import UpdateReviewForm from './Components/Review/UpdateReviewForm';
 
 function App() {
 
@@ -26,6 +29,11 @@ function App() {
               <li>
                 <Link to="/books/create/" className="hover:underline">
                   Adicionar Livro
+                </Link>
+              </li>
+              <li>
+                <Link to="/review" className="hover:underline">
+                  Reviews
                 </Link>
               </li>
               <li>
@@ -51,6 +59,15 @@ function App() {
 
             {/* Rota para criação de livros */}
             <Route path="/books/create/" element={<CreateBookForm />} />
+
+            {/* Rota para listar reviews */}
+            <Route path="/review" element={<ReviewList />} />
+
+            {/* Rota para criação de reviews. Obs: o id da rota é o book id*/}
+            <Route path="/review/create/:id" element={ <CreateReviewForm />}></Route>
+
+            {/* Rota para edição de reviews. Obs: o id da rota é o review id*/}
+            <Route path="/review/update/:id" element={ <UpdateReviewForm />}></Route>
 
             {/* Rota para página sobre (desenvolvido por) */}
             <Route path="/about" element={<About />}></Route>

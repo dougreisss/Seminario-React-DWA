@@ -2,6 +2,7 @@ import '../../App.css';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
+import { format } from 'date-fns';
 
 import { getBookWithDetails, deleteBook } from '../../Services/apiBook';
 
@@ -14,9 +15,13 @@ function BookList() {
     const [bookToDelete, setBookToDelete] = useState(null); // Armazena o livro a ser deletado
     const navigate = useNavigate(); // Hook para redirecionar
 
-    const handleUpdateClick = (book) => {
-        navigate(`/books/update/${book.book_id}`); // Redireciona para a página de atualização
+    const handleUpdateClick = (book_id) => {
+        navigate(`/books/update/${book_id}`); // Redireciona para a página de atualização
     };
+
+    const handleCreateReviewClick = (book_id) => {
+        navigate(`/review/create/${book_id}`); 
+    }
 
     // Função para buscar todos os livros da API
     const fetchBooks = async () => {
@@ -73,10 +78,15 @@ function BookList() {
                                 <p className="text-gray-700 mb-4">{book.synopsis}</p>
                                 <p className="text-gray-700 mb-4">Gêneros: {book.book_genres}</p>
                                 <p className="text-gray-700 mb-4">Autor: {book.name}</p>
+                                <p className="text-gray-700 mb-4">Data de lançamento: {format(new Date(book.publication_date), 'dd/MM/yyyy')}</p>
                                 <div className="flex space-x-4">
+                                    <button className="text-blue-500 hover:text-blue-700" 
+                                        onClick={() => handleCreateReviewClick(book.book_id)}>
+                                        Criar Review
+                                    </button>
                                     <button
                                         className="text-blue-500 hover:text-blue-700"
-                                        onClick={() => handleUpdateClick(book)}
+                                        onClick={() => handleUpdateClick(book.book_id)}
                                     >
                                         Atualizar
                                     </button>
