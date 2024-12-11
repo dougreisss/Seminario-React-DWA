@@ -7,7 +7,7 @@ const db = mysql.createConnection({
     password: 'root',
     database: 'railway'
 });
-
+ 
 db.connect((err) => {
     if (err) {
         console.error('Erro ao conectar ao banco de dados:', err);
